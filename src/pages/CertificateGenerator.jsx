@@ -2,6 +2,7 @@ import { useReducer, useState } from 'react'
 
 import styles from '../assets/styles/certificateGenerator.module.scss'
 import Modal from '../components/Modal'
+import Certificate from '../view/Certificate'
 
 const initialState = {
   name: 'Rohit Jangid',
@@ -113,7 +114,7 @@ const CertificateGenerator = () => {
       </div>
 
       <Modal isOpen={isOpenModal} handleClose={() => setIsOpenModal(false)}>
-        {`We're`} in Modal
+        <Certificate {...formState} />
       </Modal>
     </>
   )

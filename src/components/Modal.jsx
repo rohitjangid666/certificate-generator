@@ -4,7 +4,9 @@ const Modal = ({ isOpen, handleClose, ...props }) => {
   return (
     <>
       <div className={`${styles.modalWrapper} ${isOpen ? styles.modalOpen : ''}`} onClick={handleClose}>
-        <div className={styles.modalContainer}>{props.children}</div>
+        <div className={styles.modalContainer} onClick={e => e.stopPropagation()}>
+          {props.children}
+        </div>
       </div>
     </>
   )
