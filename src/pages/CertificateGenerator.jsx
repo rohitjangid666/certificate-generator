@@ -1,48 +1,58 @@
-import { useReducer, useState } from 'react'
+import { useReducer, useState } from 'react';
 
-import styles from '../assets/styles/certificateGenerator.module.scss'
-import Modal from '../components/Modal'
-import Certificate from '../view/Certificate'
+import styles from '../assets/styles/certificateGenerator.module.scss';
+import Modal from '../components/Modal';
+import Certificate from '../view/Certificate';
 
 const initialState = {
-  name: 'Rohit Jangid',
+  fullName: 'Rohit Jangid',
   course: 'Data Structure and Algorithm using JavaScript',
   dateOfConductStart: '2020-05-20',
   dateOfConductEnd: '2023-05-20',
   signature: '',
   signatureDetails: 'CEO, CipherGuy',
-}
+};
 
 const reducer = (state, action) => {
   switch (action.type) {
     case 'TEXT_CHANGE':
-      return { ...state, [action.field]: action.payload }
+      return { ...state, [action.field]: action.payload };
 
     default:
-      break
+      break;
   }
-}
+};
 
 const CertificateGenerator = () => {
-  const [isOpenModal, setIsOpenModal] = useState(false)
-  const [formState, dispatch] = useReducer(reducer, initialState)
+  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [formState, dispatch] = useReducer(reducer, initialState);
 
   const handleSubmitForm = e => {
-    e.preventDefault()
-    const { name, course, dateOfConductStart, dateOfConductEnd, signature, signatureDetails } = formState
+    e.preventDefault();
+    const { fullName, course, dateOfConductStart, dateOfConductEnd, signature, signatureDetails } = formState;
 
-    if (name && course && dateOfConductStart && dateOfConductEnd && signature && signatureDetails) {
-      console.log(`🔥💻 rj ~ form submitted!!!: `, formState)
-
-      setIsOpenModal(true)
+    if (fullName && course && dateOfConductStart && dateOfConductEnd && signature && signatureDetails) {
+      setIsOpenModal(true);
     } else {
-      alert('Please fill all details')
+      alert('Please fill all details');
     }
-  }
+  };
 
   const handleTextChange = e => {
-    dispatch({ type: 'TEXT_CHANGE', field: e.target.name, payload: e.target.value })
-  }
+    dispatch({ type: 'TEXT_CHANGE', field: e.target.name, payload: e.target.value });
+  };
+
+  const handleFileChange = e => {
+    const selected = e.target.files[0];
+
+    if (selected && selected.type.startsWith('image/')) {
+      const objectUrl = URL.createObjectURL(selected);
+      dispatch({ type: 'TEXT_CHANGE', field: e.target.name, payload: { ...selected, preview: objectUrl } });
+    } else {
+      e.target.value = '';
+      alert('Please upload a valid image file.');
+    }
+  };
 
   return (
     <>
@@ -51,7 +61,13 @@ const CertificateGenerator = () => {
           <form onSubmit={handleSubmitForm}>
             <div className={styles.inputGroup}>
               <label htmlFor='user-name'>Name</label>
-              <input type='text' name='name' value={formState.name} onChange={handleTextChange} id='user-name' />
+              <input
+                type='text'
+                name='fullName'
+                value={formState.fullName}
+                onChange={handleTextChange}
+                id='user-name'
+              />
             </div>
 
             <div className={styles.inputGroup}>
@@ -87,13 +103,8 @@ const CertificateGenerator = () => {
                 type='file'
                 name='signature'
                 id='signature'
-                onChange={e => {
-                  const selected = e.target.files[0]
-
-                  const objectUrl = URL.createObjectURL(selected)
-
-                  dispatch({ type: 'TEXT_CHANGE', field: e.target.name, payload: { ...selected, preview: objectUrl } })
-                }}
+                accept='image/jpeg, image/png'
+                onChange={handleFileChange}
               />
             </div>
 
@@ -117,7 +128,7 @@ const CertificateGenerator = () => {
         <Certificate {...formState} />
       </Modal>
     </>
-  )
-}
+  );
+};
 
-export default CertificateGenerator
+export default CertificateGenerator;

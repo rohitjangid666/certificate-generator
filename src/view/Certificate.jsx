@@ -1,7 +1,7 @@
-import moment from 'moment'
-import styles from '../assets/styles/certificateGenerator.module.scss'
+import moment from 'moment';
+import styles from '../assets/styles/certificateGenerator.module.scss';
 
-const Certificate = ({ name, course, dateOfConductStart, dateOfConductEnd, signature, signatureDetails }) => {
+const Certificate = ({ fullName, course, dateOfConductStart, dateOfConductEnd, signature, signatureDetails }) => {
   return (
     <>
       <div className={styles.certificateWrapper}>
@@ -12,7 +12,7 @@ const Certificate = ({ name, course, dateOfConductStart, dateOfConductEnd, signa
 
           <span className={styles.smallText}>This certificate is proudly awarded to</span>
 
-          <p className={styles.primaryItalicText}>{name}</p>
+          <p className={styles.primaryItalicText}>{fullName}</p>
 
           <span className={styles.smallText}>for successfully completing the course</span>
 
@@ -34,7 +34,7 @@ const Certificate = ({ name, course, dateOfConductStart, dateOfConductEnd, signa
         <button style={{ marginTop: ' 3rem' }}>Download PDF</button>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default Certificate
+export default Certificate;
